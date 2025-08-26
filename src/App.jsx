@@ -45,66 +45,74 @@ const App = () => {
     fetchItems();
   }, []);
 
-  // useEffect(() => {
-  //   const allOrders = items.map((item) => {
-  //     return item.orders;
-  //   });
-  //   let result = allOrders.reduce((sum, current) => sum + current, 0);
-
-  //   setTotalOrders(result);
-  // }, [items]);
-
   useEffect(() => {
-    console.log(items);
+    if (items) {
+      setTotalOrders(() => {
+        const ordersArray = items.map((item) => {
+          return item.orders;
+        });
+        const sum = ordersArray.reduce((sum, current) => sum + current, 0);
+        return sum;
+      });
+    }
   }, [items]);
 
-  function addToCart(id) {
+  function addOrRemove(id, change) {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) => {
+        let newOrders;
         if (item.id == id) {
+          if (change == "+") {
+            newOrders = item.orders + 1;
+          } else {
+            newOrders = item.orders - 1;
+          }
           return {
             ...item,
-            orders: item.orders + 1,
+            orders: newOrders,
           };
         }
         return item;
       });
       return updatedItems;
     });
-
-    setTotalOrders((prevTotal) => prevTotal + 1);
   }
 
-  function removeFromCart(id) {
+  function addToCartBtn(event) {
+    const { id } = event.target;
+    const firstChar = id.charAt(0);
+    addOrRemove(firstChar, "+");
+  }
+
+  function removeFromCartBtn(event) {
+    const { id } = event.target;
+    const firstChar = id.charAt(0);
+    addOrRemove(firstChar, "-");
+  }
+
+  function onChangeInput(event) {
+    const { id, value } = event.target;
+    const firstChar = id.charAt(0);
+
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) => {
-        if (item.id == id) {
+        if (item.id == firstChar) {
           return {
             ...item,
-            orders: item.orders - 1,
+            orders: Number(value),
           };
         }
         return item;
       });
       return updatedItems;
     });
-
-    setTotalOrders((prevTotal) => prevTotal - 1);
-  }
-
-  function addToCartFromShop(event) {
-    const { tagName } = event.target;
-    const { id } = event.currentTarget;
-
-    if (tagName !== "BUTTON") {
-      return;
-    }
-    addToCart(id);
   }
 
   const value = {
     items,
-    addToCartFromShop,
+    addToCartBtn,
+    removeFromCartBtn,
+    onChangeInput,
   };
 
   return (
@@ -124,8 +132,8 @@ const App = () => {
           </Link>
           <Link to="/cart">
             <ShoppingCart size={40} />
-            <button>Cart</button>
             <span>{totalOrders}</span>
+            <button>Cart</button>
           </Link>
         </section>
       </nav>

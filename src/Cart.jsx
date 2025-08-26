@@ -1,14 +1,53 @@
-import { Link } from "react-router-dom";
+import { ItemContext } from "./ItemContext";
+import { useContext } from "react";
 
-const Cart = () => {
+export default function Cart() {
+  const { items, addToCartBtn, removeFromCartBtn, onChangeInput } =
+    useContext(ItemContext);
   return (
     <>
-      <p>Hi, I am Cart! I love to eat Spinach!</p>
-      <Link to="/">Click here to go back to Home</Link>
-      <br />
-      <Link to="../profile">Click here to go back to Profile</Link>
+      {items.map(
+        (item) =>
+          item.orders > 0 && (
+            <Card
+              item={item}
+              key={item.id}
+              addToCartBtn={addToCartBtn}
+              removeFromCartBtn={removeFromCartBtn}
+              onChangeInput={onChangeInput}
+            />
+          )
+      )}
     </>
   );
-};
+}
 
-export default Cart;
+function Card({ item, addToCartBtn, removeFromCartBtn, onChangeInput }) {
+  return (
+    <article id={item.id}>
+      {item.image ? (
+        <img src={item.image} alt={item.title} />
+      ) : (
+        <p>Loading...</p>
+      )}
+      <h3>{item.title}</h3>
+      <p>${item.price}</p>
+      <div>
+        <button id={item.id + "decrease"} onClick={removeFromCartBtn}>
+          -
+        </button>
+        <input
+          type="number"
+          name={item.title}
+          id={item.id + "input"}
+          value={item.orders}
+          onChange={onChangeInput}
+          min={1}
+        />
+        <button id={item.id + "increase"} onClick={addToCartBtn}>
+          +
+        </button>
+      </div>
+    </article>
+  );
+}

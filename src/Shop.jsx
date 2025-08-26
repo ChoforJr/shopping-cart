@@ -2,19 +2,22 @@ import { ItemContext } from "./ItemContext";
 import { useContext } from "react";
 
 export default function Shop() {
-  const { items, addToCartFromShop } = useContext(ItemContext);
+  const { items, addToCartBtn } = useContext(ItemContext);
+  if (!items) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       {items.map((item) => (
-        <Card item={item} addToCartFromShop={addToCartFromShop} key={item.id} />
+        <Card item={item} addToCartBtn={addToCartBtn} key={item.id} />
       ))}
     </>
   );
 }
 
-function Card({ item, addToCartFromShop }) {
+function Card({ item, addToCartBtn }) {
   return (
-    <article onClick={addToCartFromShop} id={item.id}>
+    <article id={item.id}>
       {item.image ? (
         <img src={item.image} alt={item.title} />
       ) : (
@@ -22,7 +25,9 @@ function Card({ item, addToCartFromShop }) {
       )}
       <h3>{item.title}</h3>
       <p>${item.price}</p>
-      <button>Add to Cart</button>
+      <button onClick={addToCartBtn} id={+item.id + "increase"}>
+        Add to Cart
+      </button>
     </article>
   );
 }
