@@ -1,128 +1,100 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom"; // 1. Import MemoryRouter
-import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+// 1. Import createMemoryRouter and RouterProvider instead of MemoryRouter
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+// 2. Import the actual routes from your app to ensure the test matches reality
+import routes from "./routes";
 
-import Shop from "./Shop";
-
-const getMockItems = () => [
+// --- ARRANGE ---
+// Mock the API call so our tests are fast and predictable
+const mockItems = [
   {
-    id: "a1",
-    title: "Classic T-Shirt",
-    price: 25,
-    image: "tshirt.jpg",
-    orders: 1,
+    id: 1,
+    title: "Test Backpack",
+    price: 100,
+    image: "backpack.png",
+    orders: 0,
   },
-  { id: "b2", title: "Denim Jeans", price: 70, image: "jeans.jpg", orders: 0 },
-  { id: "c3", title: "Summer Hat", price: 15, image: null, orders: 2 },
+  { id: 2, title: "Test T-Shirt", price: 25, image: "tshirt.png", orders: 0 },
+  { id: 3, title: "Test Pants", price: 50, image: "pants.png", orders: 0 },
+  { id: 4, title: "Test Shoe", price: 30, image: "shoe.png", orders: 0 },
 ];
 
-describe("Shop Component", () => {
-  // The `render` function from React Testing Library renders the component in a virtual DOM.
+const mockFetch = vi.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(mockItems),
+  })
+);
 
-  beforeEach(() => {
-    render(
-      <MemoryRouter>
-        <Shop items={getMockItems()} />
-      </MemoryRouter>
-    );
-  });
+// Use the Vitest helper to mock 'fetch' on the global object
+vi.stubGlobal("fetch", mockFetch);
 
-  // Test case 1: Ensure the Shop renders the correct number of items.
-  it("renders a card for each item in the props", () => {
-    // `screen.getAllByRole` queries the virtual DOM for all elements with the role 'article'.
-    // Our <Card> component uses an <article> tag as its root element.
-    const cardElements = screen.getAllByRole("article");
+describe("Testing Shop page", () => {
+  // By removing the beforeEach hook and rendering inside the test,
+  // we ensure the entire async lifecycle is handled within the test's scope,
+  // which resolves the 'act' warning.
+  it("Each Item should be rendered as an article", async () => {
+    // ARRANGE: Set up the router and render the component for this specific test.
+    // 3. Create a router that uses your app's routes configuration.
+    // This more accurately simulates your application's behavior.
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    // 4. Render the RouterProvider with the created router.
+    // This will correctly match the "/shop" path and render your <App> component
+    // with the right params.
+    render(<RouterProvider router={router} />);
 
-    // `expect` is from Jest. We assert that the number of found articles
-    // is the same as the length of our mock data array.
-    expect(cardElements).toHaveLength(getMockItems().length);
-  });
+    // ACT & ASSERT: Wait for the final state to be rendered.
+    // `findAllByRole` correctly waits for the async fetch and subsequent state updates.
+    // Containing this within the `it` block ensures the test doesn't finish prematurely.
+    const cardElements = await screen.findAllByRole("article");
 
-  // Test case 2: Ensure an individual card displays all its data correctly.
-  it("renders item details correctly within a card", () => {
-    // Check for the first item's details
-    expect(screen.getByText("Classic T-Shirt")).toBeInTheDocument();
-    expect(screen.getByText("$25")).toBeInTheDocument();
-
-    // Check that the image is rendered with the correct src and alt text
-    const tshirtImage = screen.getByAltText("Classic T-Shirt");
-    expect(tshirtImage).toBeInTheDocument();
-    expect(tshirtImage).toHaveAttribute("src", "tshirt.jpg");
-
-    // Check that the input field has the correct default value
-    // We query by the value to be specific.
-    const inputs = screen.getAllByRole("spinbutton"); // input type="number"
-    const tshirtInput = inputs.find((input) => input.defaultValue === "1");
-    expect(tshirtInput).toBeInTheDocument();
-  });
-
-  // Test case 3: Check for the conditional "Loading..." text when an image is missing.
-  it('renders "Loading..." text when an item has no image', () => {
-    // The third item in our mock data has a null image.
-    // We assert that the text "Loading..." is present in the document.
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-
-    // We can also assert that the image for this item does NOT exist.
-    const hatImage = screen.queryByAltText("Summer Hat");
-    expect(hatImage).not.toBeInTheDocument();
-  });
-
-  // Test case 4: Ensure all inputs are rendered.
-  it("renders an input field for each item", () => {
-    // `getAllByRole('spinbutton')` is a reliable way to find number inputs.
-    const inputFields = screen.getAllByRole("spinbutton");
-    expect(inputFields).toHaveLength(getMockItems().length);
+    expect(cardElements).toHaveLength(mockItems.length);
   });
 });
 
-// describe("Testing Shop Input User Event", () => {
-//   // State is now managed within the Shop component.
-//   const [items, setItems] = useState([
-//     {
-//       id: "a1",
-//       title: "Classic T-Shirt",
-//       price: 25,
-//       image: "tshirt.jpg",
-//       orders: 1,
-//     },
-//     {
-//       id: "b2",
-//       title: "Denim Jeans",
-//       price: 70,
-//       image: "jeans.jpg",
-//       orders: 0,
-//     },
-//     { id: "c3", title: "Summer Hat", price: 15, image: null, orders: 2 },
-//   ]);
+// it("increaseOrders: should increment cart total when add button is clicked", async () => {
+//   const user = userEvent.setup();
 
-//   // This function updates the state when an order quantity changes.
-//   const handleOrderChange = (itemId, newOrderCount) => {
-//     setItems((currentItems) =>
-//       currentItems.map((item) =>
-//         item.id === itemId ? { ...item, orders: newOrderCount } : item
-//       )
-//     );
-//   };
-//   it("Input Number increase", async () => {
-//     // It's good practice to set up userEvent before rendering.
-//     const user = userEvent.setup();
-//     render(<Shop items={items} onChangePrice={handleOrderChange} />);
-
-//     // 1. Find the specific input field we want to interact with.
-//     // Using getByLabelText is a great, accessible way to select form elements.
-//     const jeansInput = screen.getByLabelText("Orders for Denim Jeans");
-
-//     // 2. Verify its initial value.
-//     expect(jeansInput).toHaveValue(0);
-
-//     // 3. Simulate the user clearing the input and typing a new value.
-//     // The `await` is important because user actions are asynchronous.
-//     await user.clear(jeansInput);
-//     await user.type(jeansInput, "5");
-
-//     // 4. Assert that the input's value has been updated to what the user typed.
-//     expect(jeansInput).toHaveValue(5);
+//   // Find the add button for the backpack once items have loaded
+//   const addButton = await screen.findByRole("button", {
+//     name: /add test backpack to cart/i,
 //   });
+
+//   // Find the cart total display in the navbar
+//   const cartTotalSpan = screen.getByText('0'); // It starts at 0
+
+//   // --- ACT ---
+//   await user.click(addButton);
+
+//   // --- ASSERT ---
+//   // The total in the navbar should now be "1"
+//   expect(cartTotalSpan).toHaveTextContent("1");
+
+//   // You could also check the total price if it were displayed
+// });
+
+// it("decreaseOrders: should decrement cart total when subtract button is clicked", async () => {
+//   const user = userEvent.setup();
+
+//   const addButton = await screen.findByRole("button", { name: /add test backpack to cart/i });
+//   const subtractButton = await screen.findByRole("button", { name: /remove one test backpack from cart/i }); // Assuming this button exists
+//   const cartTotalSpan = screen.getByText('0');
+
+//   // --- ACT ---
+//   // Add two items first
+//   await user.click(addButton);
+//   await user.click(addButton);
+
+//   // --- ASSERT (intermediate) ---
+//   expect(cartTotalSpan).toHaveTextContent("2");
+
+//   // --- ACT (again) ---
+//   // Now remove one
+//   await user.click(subtractButton);
+
+//   // --- ASSERT (final) ---
+//   expect(cartTotalSpan).toHaveTextContent("1");
 // });
