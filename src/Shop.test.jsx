@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 // 2. Import the actual routes from your app to ensure the test matches reality
 import routes from "./routes";
+import userEvent from "@testing-library/user-event";
 
 // --- ARRANGE ---
 // Mock the API call so our tests are fast and predictable
@@ -53,28 +54,58 @@ describe("Testing Shop page", () => {
 
     expect(cardElements).toHaveLength(mockItems.length);
   });
+  it("increaseOrders: should increment cart total when add button is clicked", async () => {
+    const user = userEvent.setup();
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    render(<RouterProvider router={router} />);
+
+    // Find the add button for the backpack once items have loaded
+    const addButton = await screen.findByRole("button", {
+      name: /add test backpack to cart/i,
+    });
+    // Find the cart total display in the navbar
+    const cartTotalSpan = screen.getByText("0"); // It starts at 0
+
+    // --- ACT ---
+    await user.click(addButton);
+
+    // --- ASSERT ---
+    // The total in the navbar should now be "1"
+    expect(cartTotalSpan).toHaveTextContent("1");
+
+    // You could also check the total price if it were displayed
+  });
+  it("Check if Price is displayed", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    render(<RouterProvider router={router} />);
+    const price = await screen.findByText(/25/i);
+
+    expect(price).toBeInTheDocument();
+  });
+  it("Check if title is displayed", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    render(<RouterProvider router={router} />);
+    const title = await screen.findByText(/Test Shoe/i);
+
+    expect(title).toBeInTheDocument();
+  });
+  it("Check if image is displayed", async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    render(<RouterProvider router={router} />);
+    const image = await screen.findByAltText(/pants/i);
+
+    expect(image).toBeInTheDocument();
+  });
 });
-
-// it("increaseOrders: should increment cart total when add button is clicked", async () => {
-//   const user = userEvent.setup();
-
-//   // Find the add button for the backpack once items have loaded
-//   const addButton = await screen.findByRole("button", {
-//     name: /add test backpack to cart/i,
-//   });
-
-//   // Find the cart total display in the navbar
-//   const cartTotalSpan = screen.getByText('0'); // It starts at 0
-
-//   // --- ACT ---
-//   await user.click(addButton);
-
-//   // --- ASSERT ---
-//   // The total in the navbar should now be "1"
-//   expect(cartTotalSpan).toHaveTextContent("1");
-
-//   // You could also check the total price if it were displayed
-// });
 
 // it("decreaseOrders: should decrement cart total when subtract button is clicked", async () => {
 //   const user = userEvent.setup();

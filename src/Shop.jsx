@@ -25,7 +25,11 @@ function Card({ item, increaseOrders }) {
       )}
       <h3>{item.title}</h3>
       <p>${item.price}</p>
-      <button onClick={increaseOrders} id={+item.id + "increase"}>
+      <button
+        onClick={increaseOrders}
+        id={+item.id + "increase"}
+        aria-label={`Add ${item.title} to cart`}
+      >
         Add to Cart
       </button>
     </article>
