@@ -14,6 +14,7 @@ const App = () => {
   const { name } = useParams();
   const [items, setItems] = useState(null);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -46,26 +47,33 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (items) {
-      setTotalOrders(() => {
-        const ordersArray = items.map((item) => {
-          return item.orders;
-        });
-        const sum = ordersArray.reduce((sum, current) => sum + current, 0);
-        return sum;
-      });
-    }
+    if (!items) return;
+    setTotalOrders(() => {
+      const sum = items.reduce((total, item) => {
+        return total + item.orders;
+      }, 0);
+      return sum;
+    });
+    setTotalPrice(() => {
+      const sum = items.reduce((total, item) => {
+        const product = item.price * item.orders;
+        return total + product;
+      }, 0);
+      return sum;
+    });
   }, [items]);
 
-  function addOrRemove(id, change) {
+  function increaseOrDecrease(id, change) {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) => {
         let newOrders;
         if (item.id == id) {
           if (change == "+") {
             newOrders = item.orders + 1;
-          } else {
+          } else if (change == "-") {
             newOrders = item.orders - 1;
+          } else {
+            newOrders = 0;
           }
           return {
             ...item,
@@ -78,16 +86,16 @@ const App = () => {
     });
   }
 
-  function addToCartBtn(event) {
+  function increaseOrders(event) {
     const { id } = event.target;
     const firstChar = id.charAt(0);
-    addOrRemove(firstChar, "+");
+    increaseOrDecrease(firstChar, "+");
   }
 
-  function removeFromCartBtn(event) {
+  function decreaseOrders(event) {
     const { id } = event.target;
     const firstChar = id.charAt(0);
-    addOrRemove(firstChar, "-");
+    increaseOrDecrease(firstChar, "-");
   }
 
   function onChangeInput(event) {
@@ -108,11 +116,33 @@ const App = () => {
     });
   }
 
+  function removeOrders(event) {
+    const { id } = event.target;
+    const firstChar = id.charAt(0);
+    increaseOrDecrease(firstChar, "R");
+  }
+
+  function clearOrders() {
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) => {
+        return {
+          ...item,
+          orders: 0,
+        };
+      });
+      return updatedItems;
+    });
+  }
+
   const value = {
     items,
-    addToCartBtn,
-    removeFromCartBtn,
+    increaseOrders,
+    decreaseOrders,
     onChangeInput,
+    removeOrders,
+    totalOrders,
+    totalPrice,
+    clearOrders,
   };
 
   return (
