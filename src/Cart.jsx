@@ -9,17 +9,19 @@ export default function Cart() {
     decreaseOrders,
     onChangeInput,
     removeOrders,
-    totalOrders,
     totalPrice,
     clearOrders,
   } = useContext(ItemContext);
   if (!items) {
     return <div>Loading...</div>;
   }
-  if (!totalOrders > 0) {
+
+  const itemsInCart = items.filter((item) => item.orders > 0);
+
+  if (itemsInCart.length === 0) {
     return (
       <section>
-        <p>Your cart is empty</p>
+        <h2>Your cart is empty</h2>
         <Link to="/shop">
           <button>Continue Shopping</button>
         </Link>
@@ -28,29 +30,27 @@ export default function Cart() {
   }
   return (
     <>
+      <h2>Your Cart</h2>
       <section>
-        <h2>Cart Items</h2>
-        {items.map(
-          (item) =>
-            item.orders > 0 && (
-              <Card
-                item={item}
-                key={item.id}
-                increaseOrders={increaseOrders}
-                decreaseOrders={decreaseOrders}
-                onChangeInput={onChangeInput}
-                removeOrders={removeOrders}
-              />
-            )
-        )}
+        <h3>Cart Items {`(${itemsInCart.length})`}</h3>
+        {itemsInCart.map((item) => (
+          <Card
+            item={item}
+            key={item.id}
+            increaseOrders={increaseOrders}
+            decreaseOrders={decreaseOrders}
+            onChangeInput={onChangeInput}
+            removeOrders={removeOrders}
+          />
+        ))}
       </section>
 
       <section>
         <h3>Order Summary</h3>
 
         <div>
-          <p>Total Price: ${totalPrice}</p>
-          <p>Total Orders: {totalOrders}</p>
+          <h4>Total </h4>
+          <h4>${totalPrice}</h4>
         </div>
 
         <div>
@@ -72,15 +72,15 @@ function Card({
 }) {
   return (
     <article id={item.id}>
-      {item.image ? (
-        <img src={item.image} alt={item.title} />
-      ) : (
-        <p>Loading...</p>
-      )}
+      <img src={item.image} alt={item.title} />
       <h3>{item.title}</h3>
       <p>${item.price}</p>
       <div>
-        <button id={item.id + "decrease"} onClick={decreaseOrders}>
+        <button
+          id={item.id + "decrease"}
+          onClick={decreaseOrders}
+          aria-label={`Reduce ${item.title} orders from cart`}
+        >
           -
         </button>
         <input
@@ -91,10 +91,18 @@ function Card({
           onChange={onChangeInput}
           min={1}
         />
-        <button id={item.id + "increase"} onClick={increaseOrders}>
+        <button
+          id={item.id + "increase"}
+          onClick={increaseOrders}
+          aria-label={`Add ${item.title} to cart`}
+        >
           +
         </button>
-        <button id={item.id + "remove"} onClick={removeOrders}>
+        <button
+          id={item.id + "remove"}
+          onClick={removeOrders}
+          aria-label={`Remove ${item.title} orders from cart`}
+        >
           Remove
         </button>
       </div>

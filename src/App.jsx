@@ -33,7 +33,7 @@ const App = () => {
             title: item.title,
             price: item.price,
             image: item.image,
-            orders: 0,
+            orders: item.orders ? item.orders : 0,
           };
         });
 
@@ -88,19 +88,19 @@ const App = () => {
 
   function increaseOrders(event) {
     const { id } = event.target;
-    const firstChar = id.charAt(0);
+    const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "+");
   }
 
   function decreaseOrders(event) {
     const { id } = event.target;
-    const firstChar = id.charAt(0);
+    const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "-");
   }
 
   function onChangeInput(event) {
     const { id, value } = event.target;
-    const firstChar = id.charAt(0);
+    const firstChar = parseInt(id, 10);
 
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) => {
@@ -118,7 +118,7 @@ const App = () => {
 
   function removeOrders(event) {
     const { id } = event.target;
-    const firstChar = id.charAt(0);
+    const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "R");
   }
 
@@ -140,7 +140,6 @@ const App = () => {
     decreaseOrders,
     onChangeInput,
     removeOrders,
-    totalOrders,
     totalPrice,
     clearOrders,
   };

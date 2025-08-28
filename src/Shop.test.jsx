@@ -105,27 +105,13 @@ describe("Testing Shop page", () => {
 
     expect(image).toBeInTheDocument();
   });
+  it("Check if items is empty will the loading text show", () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/shop"], // Start the test at the /shop route
+    });
+    render(<RouterProvider router={router} />);
+    const loading = screen.getByText(/Loading/i);
+
+    expect(loading).toBeInTheDocument();
+  });
 });
-
-// it("decreaseOrders: should decrement cart total when subtract button is clicked", async () => {
-//   const user = userEvent.setup();
-
-//   const addButton = await screen.findByRole("button", { name: /add test backpack to cart/i });
-//   const subtractButton = await screen.findByRole("button", { name: /remove one test backpack from cart/i }); // Assuming this button exists
-//   const cartTotalSpan = screen.getByText('0');
-
-//   // --- ACT ---
-//   // Add two items first
-//   await user.click(addButton);
-//   await user.click(addButton);
-
-//   // --- ASSERT (intermediate) ---
-//   expect(cartTotalSpan).toHaveTextContent("2");
-
-//   // --- ACT (again) ---
-//   // Now remove one
-//   await user.click(subtractButton);
-
-//   // --- ASSERT (final) ---
-//   expect(cartTotalSpan).toHaveTextContent("1");
-// });
