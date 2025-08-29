@@ -86,20 +86,18 @@ const App = () => {
     });
   }
 
-  function increaseOrders(event) {
-    const { id } = event.target;
+  function increaseOrders(id) {
     const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "+");
   }
 
-  function decreaseOrders(event) {
-    const { id } = event.target;
+  function decreaseOrders(id) {
     const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "-");
   }
 
-  function onChangeInput(event) {
-    const { id, value } = event.target;
+  function onChangeInput(event, id) {
+    const { value } = event.target;
     const firstChar = parseInt(id, 10);
 
     setItems((prevItems) => {
@@ -116,8 +114,7 @@ const App = () => {
     });
   }
 
-  function removeOrders(event) {
-    const { id } = event.target;
+  function removeOrders(id) {
     const firstChar = parseInt(id, 10);
     increaseOrDecrease(firstChar, "R");
   }
@@ -161,7 +158,9 @@ const App = () => {
           </Link>
           <Link to="/cart">
             <ShoppingCart size={40} />
-            <span>{totalOrders}</span>
+            <span role="status" data-testid="cart-total">
+              {totalOrders}
+            </span>
             <button>Cart</button>
           </Link>
         </section>

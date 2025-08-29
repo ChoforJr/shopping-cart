@@ -32,7 +32,7 @@ export default function Cart() {
     <>
       <h2>Your Cart</h2>
       <section>
-        <h3>Cart Items {`(${itemsInCart.length})`}</h3>
+        <h3 aria-label="Cart-Items">Cart Items {`(${itemsInCart.length})`}</h3>
         {itemsInCart.map((item) => (
           <Card
             item={item}
@@ -50,11 +50,13 @@ export default function Cart() {
 
         <div>
           <h4>Total </h4>
-          <h4>${totalPrice}</h4>
+          <h4 aria-label="Total-Price">${totalPrice}</h4>
         </div>
 
         <div>
-          <button onClick={clearOrders}>Clear Cart</button>
+          <button onClick={clearOrders} aria-label="Clear-Cart">
+            Clear Cart
+          </button>
           <button>Checkout</button>
         </div>
         <Link to="/shop">Continue Shopping</Link>
@@ -77,8 +79,7 @@ function Card({
       <p>${item.price}</p>
       <div>
         <button
-          id={item.id + "decrease"}
-          onClick={decreaseOrders}
+          onClick={() => decreaseOrders(item.id)}
           aria-label={`Reduce ${item.title} orders from cart`}
         >
           -
@@ -86,21 +87,19 @@ function Card({
         <input
           type="number"
           name={item.title}
-          id={item.id + "input"}
           value={item.orders}
-          onChange={onChangeInput}
+          onChange={(e) => onChangeInput(e, item.id)}
           min={1}
+          aria-label={`${item.title} input orders to cart`}
         />
         <button
-          id={item.id + "increase"}
-          onClick={increaseOrders}
+          onClick={() => increaseOrders(item.id)}
           aria-label={`Add ${item.title} to cart`}
         >
           +
         </button>
         <button
-          id={item.id + "remove"}
-          onClick={removeOrders}
+          onClick={() => removeOrders(item.id)}
           aria-label={`Remove ${item.title} orders from cart`}
         >
           Remove
