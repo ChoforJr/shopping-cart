@@ -9,7 +9,6 @@ export default function Cart() {
     decreaseOrders,
     onChangeInput,
     removeOrders,
-    totalPrice,
     clearOrders,
   } = useContext(ItemContext);
   if (!items) {
@@ -17,6 +16,11 @@ export default function Cart() {
   }
 
   const itemsInCart = items.filter((item) => item.orders > 0);
+
+  const totalPrice = items.reduce((total, item) => {
+    const product = item.price * item.orders;
+    return total + product;
+  }, 0);
 
   if (itemsInCart.length === 0) {
     return (
