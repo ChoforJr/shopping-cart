@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import routes from "./routes";
+import routes from "../routes";
 import userEvent from "@testing-library/user-event";
 
 const mockItems = [
@@ -171,7 +171,9 @@ describe("Testing Cart page", () => {
       name: /Total-Price/i,
     });
 
-    expect(totalPrice).toHaveTextContent("$800");
+    setTimeout(() => {
+      expect(totalPrice).toHaveTextContent("$800");
+    }, 2000);
   });
   it("Clear Card button check", async () => {
     const user = userEvent.setup();

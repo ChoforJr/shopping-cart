@@ -1,4 +1,4 @@
-import { ItemContext } from "./ItemContext";
+import { ItemContext } from "../ItemContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,17 +10,14 @@ export default function Cart() {
     onChangeInput,
     removeOrders,
     clearOrders,
+    totalPrice,
   } = useContext(ItemContext);
+
   if (!items) {
     return <div>Loading...</div>;
   }
 
   const itemsInCart = items.filter((item) => item.orders > 0);
-
-  const totalPrice = items.reduce((total, item) => {
-    const product = item.price * item.orders;
-    return total + product;
-  }, 0);
 
   if (itemsInCart.length === 0) {
     return (
@@ -32,6 +29,7 @@ export default function Cart() {
       </section>
     );
   }
+
   return (
     <>
       <h2>Your Cart</h2>

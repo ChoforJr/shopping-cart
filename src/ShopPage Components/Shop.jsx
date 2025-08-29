@@ -1,4 +1,4 @@
-import { ItemContext } from "./ItemContext";
+import { ItemContext } from "../ItemContext";
 import { useContext } from "react";
 
 export default function Shop() {

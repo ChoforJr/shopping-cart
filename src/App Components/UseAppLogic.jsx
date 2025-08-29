@@ -5,6 +5,7 @@ export function useAppLogic() {
   const { name } = useParams();
   const [items, setItems] = useState(null);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -38,11 +39,24 @@ export function useAppLogic() {
 
   useEffect(() => {
     if (!items) return;
+
     setTotalOrders(() => {
       const sum = items.reduce((total, item) => {
         return total + item.orders;
       }, 0);
       return sum;
+    });
+
+    setTotalPrice(() => {
+      const price = Number(
+        items
+          .reduce((total, item) => {
+            const product = item.price * item.orders;
+            return total + product;
+          }, 0)
+          .toFixed(2)
+      );
+      return price;
     });
   }, [items]);
 
@@ -117,6 +131,7 @@ export function useAppLogic() {
     name,
     items,
     totalOrders,
+    totalPrice,
     increaseOrders,
     decreaseOrders,
     onChangeInput,

@@ -1,8 +1,8 @@
 import "./App.css";
-import HomePage from "./HomePage";
-import Shop from "./Shop";
-import Cart from "./Cart";
-import { ItemContext } from "./ItemContext";
+import HomePage from "../HomePage Components/HomePage";
+import Shop from "../ShopPage Components/Shop.jsx";
+import Cart from "../Cart Components/Cart";
+import { ItemContext } from "../ItemContext";
 import { useAppLogic } from "./UseAppLogic";
 
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ const App = () => {
     name,
     items,
     totalOrders,
+    totalPrice,
     increaseOrders,
     decreaseOrders,
     onChangeInput,
@@ -23,6 +24,7 @@ const App = () => {
 
   const value = {
     items,
+    totalPrice,
     increaseOrders,
     decreaseOrders,
     onChangeInput,
