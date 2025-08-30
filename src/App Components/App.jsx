@@ -33,7 +33,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <div className="container">
       <nav>
         <h1>
           <Link to="/">Shopping Cart</Link>
@@ -41,18 +41,15 @@ const App = () => {
         <section>
           <Link to="/">
             <House size={40} />
-            <button>Home</button>
           </Link>
           <Link to="/shop">
             <Store size={40} />
-            <button>Shop</button>
           </Link>
           <Link to="/cart">
             <ShoppingCart size={40} />
             <span role="status" data-testid="cart-total">
               {totalOrders}
             </span>
-            <button>Cart</button>
           </Link>
         </section>
       </nav>
@@ -73,7 +70,7 @@ const App = () => {
           Chofor Forsakang
         </a>
       </footer>
-    </>
+    </div>
   );
 };
 

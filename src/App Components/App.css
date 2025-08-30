@@ -1,16 +1,80 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: auto;
+  font-size: 10px;
+  background-color: #e5e7eb;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@font-face {
+  font-family: "caprasimoregular";
+  src: url("/Fonts/Caprasimo-Regular/caprasimo-regular-webfont.woff2")
+      format("woff2"),
+    url("/Fonts/Caprasimo-Regular/caprasimo-regular-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dancing_script_otregular";
+  src: url("/Fonts/dancingscript-regular-webfont/dancingscript-regular-webfont.woff2")
+      format("woff2"),
+    url("/Fonts/dancingscript-regular-webfont/dancingscript-regular-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+p {
+  font-family: "dancing_script_otregular";
+  font-size: 1.6rem;
+}
+h1,
+h2,
+h3 {
+  font-family: "caprasimoregular";
+  font-size: 1.6rem;
 }
 
 nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #3882f6;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
 }
-
 nav a {
   text-decoration: none;
+  color: #1f2937;
+}
+nav section {
+  display: flex;
+  gap: 3rem;
+}
+nav section span {
+  font-size: 1.4rem;
+  color: #00ff00;
+  font-weight: bold;
+  transform: translateY(-1.4rem);
+  display: inline-block;
+}
+
+footer {
+  background-color: #1f2937;
+  margin-top: auto;
+  text-align: center;
+  justify-self: end;
+  color: #e5e7eb;
+  font-size: 1.6rem;
+}
+footer a {
+  text-decoration: none;
+  color: #00ff00;
 }
