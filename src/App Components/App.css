@@ -2,6 +2,7 @@ body {
   margin: auto;
   font-size: 10px;
   background-color: #e5e7eb;
+  box-sizing: border-box;
 }
 
 .container {

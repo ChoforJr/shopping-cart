@@ -21,8 +21,12 @@ describe("HomePage Testing", () => {
   });
 
   it("renders paragraph", () => {
-    expect(screen.getByRole("paragraph").textContent).toMatch(
+    const paragraph = screen.getByText(
       /Discover a curated collection of high-quality electronics and accessories. From the latest gadgets to essential gear, we have everything you need./i
+    );
+
+    expect(paragraph).toHaveTextContent(
+      "Discover a curated collection of high-quality electronics and accessories. From the latest gadgets to essential gear, we have everything you need."
     );
   });
 

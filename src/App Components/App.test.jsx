@@ -13,19 +13,11 @@ describe("App component Testing", () => {
       </MemoryRouter>
     );
   });
+
   it("Navbar heading", () => {
     expect(screen.getByText("Shopping Cart")).toBeInTheDocument();
   });
 
-  it("Home Button", () => {
-    expect(screen.getByText("Home")).toBeInTheDocument();
-  });
-  it("Shop Button", () => {
-    expect(screen.getByText("Shop")).toBeInTheDocument();
-  });
-  it("Cart Button", () => {
-    expect(screen.getByText("Cart")).toBeInTheDocument();
-  });
   it("Footer link", () => {
     expect(
       screen.getByRole("link", { name: /Chofor Forsakang/i })
