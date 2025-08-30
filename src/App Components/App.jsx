@@ -53,7 +53,7 @@ const App = () => {
           </Link>
         </section>
       </nav>
-      <main>
+      <>
         <ItemContext.Provider value={value}>
           {name === "shop" ? (
             <Shop />
@@ -63,7 +63,7 @@ const App = () => {
             <HomePage />
           )}
         </ItemContext.Provider>
-      </main>
+      </>
       <footer>
         Made by{" "}
         <a href="https://github.com/ChoforJr/shopping-cart" target="_blank">

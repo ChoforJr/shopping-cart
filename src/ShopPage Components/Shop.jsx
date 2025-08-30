@@ -7,11 +7,11 @@ export default function Shop() {
     return <div>Loading...</div>;
   }
   return (
-    <>
+    <main>
       {items.map((item) => (
         <Card item={item} increaseOrders={increaseOrders} key={item.id} />
       ))}
-    </>
+    </main>
   );
 }
 

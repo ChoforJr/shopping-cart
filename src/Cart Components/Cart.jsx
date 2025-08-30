@@ -31,7 +31,7 @@ export default function Cart() {
   }
 
   return (
-    <>
+    <main>
       <h2>Your Cart</h2>
       <section>
         <h3 aria-label="Cart-Items">Cart Items {`(${itemsInCart.length})`}</h3>
@@ -63,7 +63,7 @@ export default function Cart() {
         </div>
         <Link to="/shop">Continue Shopping</Link>
       </section>
-    </>
+    </main>
   );
 }
 
