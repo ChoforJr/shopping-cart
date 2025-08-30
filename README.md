@@ -15,11 +15,11 @@ This project is a modern e-commerce shopping cart application built with React. 
 - React: Core framework for building the user interface and managing application state.
 - Vanilla CSS: Used pure CSS for styling this project.
 - FakeStore API: External API for fetching product data.
-- Vitest: For unit testing React components.
+- Vitest: For testing React components.
 
 ## What I Learned
 
 - React Router Implementation: Mastered declarative routing in React, including route configuration, navigation, and handling dynamic - routes for product pages.
-- Testing with Vitest: Gained experience in writing and running unit tests for React components.
+- Testing with Vitest: Gained experience in writing and running tests for React components.
 - Context API: Implemented global state management using React Context for the shopping cart functionality.
 - API Integration: Implemented API calls to fetch product data from FakeStore API, handling async operations and error states.
