@@ -1,0 +1,50 @@
+.body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+.body h3 {
+  font-size: 1.2rem;
+  white-space: nowrap; /* Prevents text from wrapping to the next line */
+  overflow: hidden; /* Hides any content that overflows the container */
+  text-overflow: ellipsis; /* Adds an ellipsis (...) to the truncated text */
+  width: 340px; /*  Set a fixed width for the container */
+  margin: none;
+  padding: none;
+}
+.body p {
+  font-size: 1.2rem;
+}
+.body article {
+  background-color: #96ded1;
+  border: #0000 0.1rem solid;
+  border-radius: 1rem;
+  transition: transform 0.3s ease-in-out;
+  max-height: 20rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0;
+}
+.body article:hover {
+  transform: scale(1.05);
+}
+.body article img {
+  max-width: 60%;
+  max-height: 50%;
+  align-self: center;
+}
+.body button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #febe10;
+  color: #3882f6;
+  padding: 0.25rem;
+  border-radius: 1rem;
+  border-width: 0;
+}
+.body button:hover {
+  cursor: pointer;
+}

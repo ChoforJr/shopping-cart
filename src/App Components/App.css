@@ -45,7 +45,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #3882f6;
+  background-color: #febe10;
   padding: 0 2rem;
   position: sticky;
   top: 0;
@@ -67,14 +67,14 @@ nav section span {
 }
 
 footer {
-  background-color: #1f2937;
+  background-color: #ffc72c;
   margin-top: auto;
   text-align: center;
   justify-self: end;
-  color: #e5e7eb;
+  color: #36454f;
   font-size: 1.6rem;
 }
 footer a {
   text-decoration: none;
-  color: #00ff00;
+  color: #3882f6;
 }

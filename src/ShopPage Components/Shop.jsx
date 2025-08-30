@@ -1,5 +1,6 @@
 import { ItemContext } from "../ItemContext";
 import { useContext } from "react";
+import styles from "./shop.module.css";
 
 export default function Shop() {
   const { items, increaseOrders } = useContext(ItemContext);
@@ -7,7 +8,7 @@ export default function Shop() {
     return <div>Loading...</div>;
   }
   return (
-    <main>
+    <main className={styles.body}>
       {items.map((item) => (
         <Card item={item} increaseOrders={increaseOrders} key={item.id} />
       ))}
