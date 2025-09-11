@@ -23,3 +23,5 @@ This project is a modern e-commerce shopping cart application built with React. 
 - Testing with Vitest: Gained experience in writing and running tests for React components.
 - Context API: Implemented global state management using React Context for the shopping cart functionality.
 - API Integration: Implemented API calls to fetch product data from FakeStore API, handling async operations and error states.
+
+# Author : FORSAKANG CHOFOR JUNIOR
