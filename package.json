@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "FORSAKANG CHOFOR JUNIOR",
-  "license": "ISC",
+  "license": "",
   "dependencies": {
     "lucide-react": "^0.541.0",
     "react": "^19.1.1",
